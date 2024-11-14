@@ -51,7 +51,7 @@ class _ImageViewState extends State<ImageView> {
 
     String getFormattedTimestamp() {
       final now = DateTime.now();
-      final formatted = DateFormat('yyyyMMdd HH:mm').format(now);
+      final formatted = DateFormat('yyyyMMddTHH:mm').format(now);
       return formatted;
     }
 

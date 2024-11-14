@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
 
-
 class BackgroundRemovalPage extends StatefulWidget {
   const BackgroundRemovalPage({super.key});
 
