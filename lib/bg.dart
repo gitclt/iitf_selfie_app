@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:path_provider/path_provider.dart';
-import 'package:screenshot/screenshot.dart';
 
 class BackgroundRemovalPage extends StatefulWidget {
+  const BackgroundRemovalPage({super.key});
+
   @override
   _BackgroundRemovalPageState createState() => _BackgroundRemovalPageState();
 }

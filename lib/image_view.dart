@@ -3,6 +3,7 @@ import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:iitf_selfy_app/img_response.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
@@ -18,6 +19,7 @@ class ImageView extends StatefulWidget {
 class _ImageViewState extends State<ImageView> {
   String qr = '';
   bool _isProcessing = false;
+
   void upload(String path) async {
     _isProcessing = true;
     setState(() {});
@@ -42,11 +44,20 @@ class _ImageViewState extends State<ImageView> {
   }
 
   ScreenshotController screenshotController = ScreenshotController();
+
   Future<void> _takeScreenshot() async {
     _isProcessing = true;
     setState(() {});
+
+    String getFormattedTimestamp() {
+      final now = DateTime.now();
+      final formatted = DateFormat('yyyyMMdd HH:mm').format(now);
+      return formatted;
+    }
+
+    final timestamp = getFormattedTimestamp();
     final directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}/screenshot.png';
+    String path = '${directory.path}/screenshot_$timestamp.png';
 
     // Capture the screenshot and save as a file
     screenshotController
@@ -71,16 +82,16 @@ class _ImageViewState extends State<ImageView> {
       barrierColor: Colors.black.withOpacity(0.5),
       transitionDuration: const Duration(milliseconds: 700),
       pageBuilder: (_, __, ___) {
-        return Center(
+        return Align(
+          alignment: Alignment.bottomCenter,
           child: Container(
-            // height: 240,
-            width: 300,
+            padding: const EdgeInsets.only(top: 10),
             height: 200,
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            // margin: const EdgeInsets.symmetric(vertical: 20),
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: Center(
-              child: SizedBox.expand(
+                color: Colors.white, borderRadius: BorderRadius.circular(5)),
+            child: SizedBox.expand(
+              child: Center(
                 child: QrImageView(
                   data: qr,
                   version: QrVersions.auto,
@@ -127,14 +138,17 @@ class _ImageViewState extends State<ImageView> {
             alignment: Alignment.center,
             children: [
               Image.asset(
-                'assets/bg.jpg',
+                'assets/selfie_bg.png',
                 fit: BoxFit.cover,
               ),
               if (widget.imge != null)
                 Positioned(
-                  bottom: 0,
+                  top: 0,
                   child: Image.file(
                     widget.imge!,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.8,
+
                     // width: MediaQuery.of(context).size.width * .8,
                   ),
                 ),
