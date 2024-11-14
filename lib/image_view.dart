@@ -19,6 +19,7 @@ class ImageView extends StatefulWidget {
 class _ImageViewState extends State<ImageView> {
   String qr = '';
   bool _isProcessing = false;
+  bool showButton = true;
 
   void upload(String path) async {
     _isProcessing = true;
@@ -47,7 +48,9 @@ class _ImageViewState extends State<ImageView> {
 
   Future<void> _takeScreenshot() async {
     _isProcessing = true;
-    setState(() {});
+    setState(() {
+      showButton = false;
+    });
 
     String getFormattedTimestamp() {
       final now = DateTime.now();
@@ -69,8 +72,15 @@ class _ImageViewState extends State<ImageView> {
       if (filePath != null) {
         upload(filePath);
       }
+      setState(() {
+        showButton = true; // Show the button after screenshot
+      });
     }).catchError((error) {
       print("Error capturing screenshot: $error");
+      setState(() {
+        showButton =
+            true; // Ensure the button is shown even if there's an error
+      });
     });
   }
 
@@ -138,37 +148,39 @@ class _ImageViewState extends State<ImageView> {
             alignment: Alignment.center,
             children: [
               Image.asset(
-                'assets/selfie_bg.png',
+                'assets/bg.jpg',
                 fit: BoxFit.cover,
               ),
               if (widget.imge != null)
                 Positioned(
                   top: 0,
+                 // bottom: 100,
                   child: Image.file(
                     widget.imge!,
                     width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.8,
+                    //  height: MediaQuery.of(context).size.height * 0.9,
 
                     // width: MediaQuery.of(context).size.width * .8,
                   ),
                 ),
-              Positioned(
-                bottom: 50,
-                child: TextButton(
-                  onPressed: () {
-                    _takeScreenshot();
-                  },
-                  child: Container(
-                    color: Colors.green,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 30),
-                    child: const Text(
-                      'QRCODE',
-                      style: TextStyle(color: Colors.white, fontSize: 13.0),
+              if (showButton)
+                Positioned(
+                  bottom: 50,
+                  child: TextButton(
+                    onPressed: () {
+                      _takeScreenshot();
+                    },
+                    child: Container(
+                      color: Colors.green,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 30),
+                      child: const Text(
+                        'QRCODE',
+                        style: TextStyle(color: Colors.white, fontSize: 13.0),
+                      ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
