@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
 
-
 class BackgroundRemovalPage extends StatefulWidget {
   const BackgroundRemovalPage({super.key});
 
@@ -46,7 +45,7 @@ class _BackgroundRemovalPageState extends State<BackgroundRemovalPage> {
 
     try {
       // Replace YOUR_API_KEY with your actual Remove.bg API key
-      const apiKey = 'FBKo7bPJUzirhmWzeSBSM2ak';
+      const apiKey = 'wiKA7k2kgi5zz33g1tjVVjg2';
       final url = Uri.parse('https://api.remove.bg/v1.0/removebg');
 
       // Prepare the image file

@@ -154,7 +154,7 @@ class _ImageViewState extends State<ImageView> {
               if (widget.imge != null)
                 Positioned(
                   top: 0,
-                 // bottom: 100,
+                  bottom: 80,
                   child: Image.file(
                     widget.imge!,
                     width: MediaQuery.of(context).size.width * 0.8,
