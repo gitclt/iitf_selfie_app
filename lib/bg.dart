@@ -1,5 +1,6 @@
 import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
 import 'package:http/http.dart' as http;
+import 'package:iitf_selfy_app/api_key_model.dart';
 import 'package:iitf_selfy_app/image_view.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,12 @@ class _BackgroundRemovalPageState extends State<BackgroundRemovalPage> {
   File? _originalImage;
   File? _processedImage;
   bool _isProcessing = false;
+  var bgApiKey = 'wiKA7k2kgi5zz33g1tjVVjg2';
   // Create a ScreenshotController
 
   final ImagePicker _picker = ImagePicker();
+
+  onInit() {}
 
   Future<void> takeSelfie() async {
     final XFile? photo = await _picker.pickImage(
@@ -32,11 +36,42 @@ class _BackgroundRemovalPageState extends State<BackgroundRemovalPage> {
         _originalImage = File(photo.path);
         _processedImage = null;
       });
-      await _removeBackground();
+      await getApiKey();
     }
   }
 
-  Future<void> _removeBackground() async {
+  Future<void> getApiKey() async {
+    setState(() {
+      _isProcessing = true;
+    });
+
+    final url = Uri.parse(
+        'http://newtest.vkcparivar.com/api/flutter/task_management/key.aspx');
+    try {
+      final response = await http.post(url, body: {"key": bgApiKey});
+      if (response.statusCode == 200) {
+        final result = response.body;
+        final keyValue = apiKeyModelFromJson(result);
+        setState(() {
+          _isProcessing = false;
+        });
+        print(keyValue.data!.first.key!);
+        _removeBackground(keyValue.data!.first.key!);
+      } else {
+        throw Exception('Failed to remove background');
+      }
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+      setState(() {
+        _isProcessing = false;
+      });
+    }
+  }
+
+  Future<void> _removeBackground(String apiKey) async {
     if (_originalImage == null) return;
 
     setState(() {
@@ -45,7 +80,7 @@ class _BackgroundRemovalPageState extends State<BackgroundRemovalPage> {
 
     try {
       // Replace YOUR_API_KEY with your actual Remove.bg API key
-      const apiKey = 'wiKA7k2kgi5zz33g1tjVVjg2';
+
       final url = Uri.parse('https://api.remove.bg/v1.0/removebg');
 
       // Prepare the image file

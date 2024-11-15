@@ -148,24 +148,12 @@ class _ImageViewState extends State<ImageView> {
             alignment: Alignment.center,
             children: [
               Image.asset(
-                'assets/bg.jpg',
+                'assets/selfie_bg1.png',
                 fit: BoxFit.cover,
               ),
-              if (widget.imge != null)
-                Positioned(
-                  top: 0,
-                  bottom: 80,
-                  child: Image.file(
-                    widget.imge!,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    //  height: MediaQuery.of(context).size.height * 0.9,
-
-                    // width: MediaQuery.of(context).size.width * .8,
-                  ),
-                ),
               if (showButton)
                 Positioned(
-                  bottom: 50,
+                  top: 80,
                   child: TextButton(
                     onPressed: () {
                       _takeScreenshot();
@@ -179,6 +167,18 @@ class _ImageViewState extends State<ImageView> {
                         style: TextStyle(color: Colors.white, fontSize: 13.0),
                       ),
                     ),
+                  ),
+                ),
+              if (widget.imge != null)
+                Positioned(
+                  top: 10,
+                  bottom: 10,
+                  child: Image.file(
+                    widget.imge!,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    //  height: MediaQuery.of(context).size.height * 0.9,
+
+                    // width: MediaQuery.of(context).size.width * .8,
                   ),
                 ),
             ],
