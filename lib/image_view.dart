@@ -143,42 +143,55 @@ class _ImageViewState extends State<ImageView> {
       child: Screenshot(
         controller: screenshotController,
         child: Scaffold(
-          body: Stack(
-            fit: StackFit.expand,
-            alignment: Alignment.center,
+          body: Column(
             children: [
-              Image.asset(
-                'assets/selfie_bg1.png',
-                fit: BoxFit.cover,
+              Stack(
+                //  fit: StackFit.expand,
+                alignment: Alignment.center,
+                children: [
+                  Image.asset(
+                    'assets/selfie_bg1.png',
+                    fit: BoxFit.fill,
+                    height: MediaQuery.of(context).size.height * 0.7,
+                  ),
+                  if (widget.imge != null)
+                    Positioned(
+                      top: 100,
+                      bottom: 0,
+                      child: Image.file(
+                        widget.imge!,
+                        fit: BoxFit.cover,
+                        //  width: MediaQuery.of(context).size.width * 0.9,
+                        // height: MediaQuery.of(context).size.height * 0.4,
+
+                        // width: MediaQuery.of(context).size.width * .8,
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(
+                height: 50,
               ),
               if (showButton)
-                Positioned(
-                  top: 80,
-                  child: TextButton(
-                    onPressed: () {
-                      _takeScreenshot();
-                    },
-                    child: Container(
+                TextButton(
+                  onPressed: () {
+                    _takeScreenshot();
+                  },
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: const BoxDecoration(
                       color: Colors.green,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30),
-                      child: const Text(
+                      shape: BoxShape.circle,
+                    ),
+                    // padding: const EdgeInsets.symmetric(
+                    //     vertical: 10, horizontal: 30),
+                    child: const Center(
+                      child: Text(
                         'QRCODE',
                         style: TextStyle(color: Colors.white, fontSize: 13.0),
                       ),
                     ),
-                  ),
-                ),
-              if (widget.imge != null)
-                Positioned(
-                  top: 10,
-                  bottom: 10,
-                  child: Image.file(
-                    widget.imge!,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    //  height: MediaQuery.of(context).size.height * 0.9,
-
-                    // width: MediaQuery.of(context).size.width * .8,
                   ),
                 ),
             ],
